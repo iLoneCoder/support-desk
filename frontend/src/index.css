@@ -52,7 +52,7 @@ h3 {
   margin-bottom: 60px;
 }
 
-.logo{
+.logo {
   font-weight: 400;
 }
 
@@ -121,6 +121,7 @@ h3 {
 
 .form-group {
   margin-bottom: 10px;
+  position: relative;
 }
 
 .form-group input,
@@ -131,6 +132,7 @@ h3 {
   border: 1px solid #e6e6e6;
   border-radius: 5px;
   margin-bottom: 10px;
+
   font-family: inherit;
 }
 
@@ -138,6 +140,19 @@ h3 {
   text-align: left;
   display: block;
   margin: 0 0 5px 3px;
+}
+
+.show-password {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+  color: gray;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.show-password:hover {
+  color: rgb(150, 150, 150);
 }
 
 .btn {
@@ -385,6 +400,7 @@ footer {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
