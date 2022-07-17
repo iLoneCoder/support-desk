@@ -1,16 +1,33 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FaUser, FaEye } from "react-icons/fa"
 import { useSelector, useDispatch } from "react-redux"
-import { register } from "../features/auth/authSlice"
-import {toast} from "react-toastify"
+import { register, reset } from "../features/auth/authSlice"
+import { toast } from "react-toastify"
+import { useNavigate } from "react-router-dom"
 
 function Register() {
     const [formData, setFormData] = useState({ name: "", email: "", password: "", password1: "" });
     const [showPassword, setShowPassword] = useState(false);
     const { name, email, password, password1 } = formData;
 
-    // const { user, isError, isSuccess, isLoading } = useSelector(state => state.auth);
+    const { user, isError, isSuccess, message } = useSelector(state => state.auth);
+
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // console.log(message)
+        if (isError) {
+            toast.error(message)
+        }
+
+        if (user || isSuccess) {
+            navigate("/")
+        }
+
+        dispatch(reset())
+
+    }, [isError, message, isSuccess, dispatch, navigate, user])
 
     const handleChange = (e) => {
         setFormData((prevState) => ({
@@ -28,7 +45,7 @@ function Register() {
         e.preventDefault();
 
         if (password === password1 && password !== "") {
-            const userData = {name, email, password}
+            const userData = { name, email, password }
             dispatch(register(userData))
         } else {
             toast.error("Something wrong!")

@@ -2,7 +2,7 @@ import { useState } from "react"
 import { FaSignInAlt, FaEye } from "react-icons/fa"
 import { useSelector, useDispatch } from "react-redux"
 import { toast } from "react-toastify";
-import { register } from "../features/auth/authSlice";
+import { logIn } from "../features/auth/authSlice";
 function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ function Login() {
         e.preventDefault();
         if (email !== "" && password !== "") {
             const userData = { email, password };
-            dispatch(register(userData));
+            dispatch(logIn(userData));
         } else {
             toast.error("Enter email and password");
         }
