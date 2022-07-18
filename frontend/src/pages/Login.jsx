@@ -1,14 +1,31 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FaSignInAlt, FaEye } from "react-icons/fa"
 import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify";
-import { logIn } from "../features/auth/authSlice";
+import { login, reset } from "../features/auth/authSlice";
+
 function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
     const { email, password } = formData;
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { user, isError, message, isSuccess } = useSelector(state => state.auth);
+
+    useEffect(() => {
+
+        if (isError) {
+            toast.error(message)
+        }
+
+        if (user || isSuccess) {
+            navigate("/")
+        }
+
+        dispatch(reset())
+    }, [isError, isSuccess, user, dispatch, message, navigate])
 
     const handleChange = (e) => {
         setFormData((prevState) => ({
@@ -25,7 +42,7 @@ function Login() {
         e.preventDefault();
         if (email !== "" && password !== "") {
             const userData = { email, password };
-            dispatch(logIn(userData));
+            dispatch(login(userData));
         } else {
             toast.error("Enter email and password");
         }
