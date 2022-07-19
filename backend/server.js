@@ -13,8 +13,10 @@ app.use(express.urlencoded({ extended: false }))
 
 //Routers
 const userRoutes = require("./routes/userRoutes");
+const ticketRoutes = require("./routes/ticketRoutes");
 
 app.use("/api/users", userRoutes);
+app.use("/api/tickets", ticketRoutes);
 
 //avoiding CORS error
 app.use((req, res, next) => {
