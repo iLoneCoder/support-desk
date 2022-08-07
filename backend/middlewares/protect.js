@@ -8,23 +8,24 @@ const protect = async (req, res, next) => {
         //get token
         try {
             token = req.headers.authorization.split(" ")[1];
-        } catch { }
-
+        } catch {
+            res.status(401);
+            throw new Error("Token is undefined")
+        }
+        // console.log(token)
         if (token) {
             //decode token
             const decode = jwt.verify(token, process.env.JWT_SECRET);
-            // console.log(decode)
+
             const user = await User.findById(decode.id).select("-password");
             req.user = user;
-
         } else {
             res.status(401);
             throw new Error("Not veryfied");
         }
         next();
     } catch (error) {
-        const statusCode = res.statusCode;
-        console.log(statusCode)
+        const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
         res.status(statusCode).json({
             message: error.message
         })

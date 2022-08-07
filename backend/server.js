@@ -17,7 +17,10 @@ const ticketRoutes = require("./routes/ticketRoutes");
 
 app.use("/api/users", userRoutes);
 app.use("/api/tickets", ticketRoutes);
-
+app.use("/*", (req, res, next) => {
+    res.status(404)
+    throw new Error("Page not found!")
+})
 //avoiding CORS error
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

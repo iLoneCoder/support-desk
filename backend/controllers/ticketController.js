@@ -2,14 +2,15 @@ const Ticket = require("../models/ticketModel");
 
 const getTickets = async (req, res, next) => {
     const tickets = await Ticket.find({ user: req.user._id })
-    res.status(200).json({ tickets: tickets });
+    res.status(200).json(tickets);
 }
 
 const getTicket = async (req, res, next) => {
     const id = req.params.id;
+
     try {
         const ticket = await Ticket.findById(id);
-
+        
         if (!ticket) {
             res.status(404);
             throw new Error("Ticket not found!");
@@ -22,7 +23,7 @@ const getTicket = async (req, res, next) => {
 
         res.status(200).json(ticket);
     } catch (error) {
-        const statusCode = res.statusCode ? res.statusCode : 500;
+        const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
         res.status(statusCode).json({ message: error.message })
     }
 
@@ -67,7 +68,7 @@ const updateTicket = async (req, res, next) => {
             res.status(401);
             throw new Error("Not authorized!");
         }
-
+        
         const updatedTicket = await Ticket.findOneAndUpdate({ _id: id }, req.body, { new: true })
 
         res.status(200).json(updatedTicket)
