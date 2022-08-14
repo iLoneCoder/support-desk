@@ -3,8 +3,8 @@ const Notes = require("../models/noteModel")
 exports.getNotes = async (req, res, next) => {
     const ticketId = req.params.id
     try {
-        const notes = await Notes.find({ ticket: ticketId });
-
+        const notes = await Notes.find({ ticket: ticketId }).populate("user", "name");
+        // console.log(notes)
         res.status(200).json(notes)
     } catch (error) {
         const statusCode = res.statusCode !== 200 ? res.statusCode : 500
@@ -34,6 +34,26 @@ exports.createNote = async (req, res, next) => {
         res.status(201).json(note)
     } catch (error) {
         const statusCode = res.statusCode !== 200 ? res.statusCode : 500
+        res.status(statusCode).json({ message: error.message })
+    }
+}
+
+exports.deleteNote = async (req, res, next) => {
+    const userId = req.user._id
+    const { noteId } = req.body
+    
+    try {
+        const note = await Notes.findOneAndDelete({ _id: noteId, user: userId })
+
+        if (note) {
+            res.status(200).json(note)
+        } else {
+            res.status(404)
+            throw new Error("Note isn't found!")
+        }
+    } catch (error) {
+        const statusCode = res.statusCode !== 200 ? res.statusCode : 500
+
         res.status(statusCode).json({ message: error.message })
     }
 }

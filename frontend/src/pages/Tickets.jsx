@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 import Spinner from "../components/Spinner"
 import TicketItem from "./TicketItem";
 import BackButton from "../components/BackButton";
-
+import {reset as resetNote} from "../features/notes/noteSlice"
 
 function Tickets() {
     const dispatch = useDispatch();
@@ -22,6 +22,7 @@ function Tickets() {
         return () => {
             if (isSuccess) {
                 dispatch(reset())
+                dispatch(resetNote())
             }
         }
     }, [dispatch, isError, message, isSuccess])
