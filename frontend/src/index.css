@@ -333,7 +333,15 @@ h3 {
   cursor: pointer;
   position: absolute;
   bottom: 10px;
-  right: 30px;
+  right: 40px;
+}
+
+.update-note {
+  color: green;
+  cursor: pointer;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
 }
 
 .btn-close {

@@ -41,8 +41,12 @@ exports.createNote = async (req, res, next) => {
 exports.deleteNote = async (req, res, next) => {
     const userId = req.user._id
     const { noteId } = req.body
-    
+
     try {
+        if (!userId || !noteId) {
+            res.status(400)
+            throw new Error("Parameters not found!")
+        }
         const note = await Notes.findOneAndDelete({ _id: noteId, user: userId })
 
         if (note) {
@@ -57,3 +61,41 @@ exports.deleteNote = async (req, res, next) => {
         res.status(statusCode).json({ message: error.message })
     }
 }
+
+exports.updateNote = async (req, res, next) => {
+    const userId = req.user._id
+    const { noteId, text } = req.body
+
+    try {
+        if (!userId || !noteId) {
+            res.status(400)
+            throw new Error("Parameters not found!")
+        }
+
+        const filter = {
+            _id: noteId,
+            user: userId
+        }
+
+        const update = {
+            text
+        }
+
+        const note = await Notes.findOne(filter)
+
+
+        if (!note || !text) {
+            res.status(404)
+            throw new Error("There is no element to update!")
+        }
+
+        const updatedNote = await Notes.findOneAndUpdate(filter, update, { new: true })
+
+        res.status(200).json(updatedNote)
+
+    } catch (error) {
+        const statusCode = res.statusCode !== 200 ? res.statusCode : 500
+
+        res.status(statusCode).json({ message: error.message })
+    }
+} 

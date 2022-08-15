@@ -50,10 +50,25 @@ const deleteNote = async (token, noteData) => {
     return response.data
 }
 
+const updateNote = async (token, noteData) => {
+    const { ticketId } = noteData
+    delete noteData.ticketId
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(`${API_URL}/${ticketId}/notes`, noteData, config)
+
+    return response.data
+}
+
 const noteService = {
     getNotes,
     createNote,
-    deleteNote
+    deleteNote,
+    updateNote
 }
 
 export default noteService
