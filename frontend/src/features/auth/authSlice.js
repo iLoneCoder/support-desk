@@ -23,6 +23,7 @@ export const register = createAsyncThunk("auth/register", async (auth, thunkAPI)
 
 export const login = createAsyncThunk("auth/login", async (auth, thunkAPI) => {
     try {
+        console.log("auth: ", auth)
         return await authService.login(auth)
     } catch (error) {
         const message = error.response.data.message;
